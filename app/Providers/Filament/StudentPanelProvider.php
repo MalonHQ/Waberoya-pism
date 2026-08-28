@@ -25,7 +25,6 @@ class StudentPanelProvider extends PanelProvider
         return $panel
             ->id('student')
             ->path('student')
-            ->login()
             ->brandName('Student Panel')
             ->colors([
                 'primary' => Color::Emerald,
@@ -33,7 +32,9 @@ class StudentPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Student/Resources'), for: 'App\\Filament\\Student\\Resources')
             ->discoverPages(in: app_path('Filament/Student/Pages'), for: 'App\\Filament\\Student\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                \App\Filament\Student\Pages\CustomDashboard::class,
+                \App\Filament\Student\Pages\ViewMyResults::class,
+                \App\Filament\Student\Pages\ChangePassword::class, // Hapa tumeongeza kubadilisha password
             ])
             ->discoverWidgets(in: app_path('Filament/Student/Widgets'), for: 'App\\Filament\\Student\\Widgets')
             ->widgets([

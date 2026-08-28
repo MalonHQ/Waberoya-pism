@@ -11,6 +11,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
+use App\Filament\Lecturer\Pages\ChangePassword;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -25,7 +26,7 @@ class LecturerPanelProvider extends PanelProvider
         return $panel
             ->id('lecturer')
             ->path('lecturer')
-            ->login()
+            // Tumefuta ->login() hapa ili isitengeneze fomu yake binafsi
             ->brandName('Waberoya Lecturer Panel')
             ->colors([
                 'primary' => Color::Sky,
@@ -34,6 +35,7 @@ class LecturerPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Lecturer/Pages'), for: 'App\\Filament\\Lecturer\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+                ChangePassword::class, // Ukarasa wa kubadili password umesajiliwa rasmi hapa
             ])
             ->discoverWidgets(in: app_path('Filament/Lecturer/Widgets'), for: 'App\\Filament\\Lecturer\\Widgets')
             ->widgets([
@@ -52,6 +54,7 @@ class LecturerPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                \App\Http\Middleware\RoleRedirectMiddleware::class,
             ]);
     }
 }

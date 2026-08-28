@@ -2,7 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Mtu akifungua http://127.0.0.1:8000/ anaenda moja kwa moja kwenye Login Form ya /admin
+// Mtu akifungua root URL, anatua kwenye fomu ya Login ya Admin
 Route::get('/', function () {
-    return redirect('/admin');
+    return redirect('/admin/login');
 });
+
+// Hii ndiyo inayosuluhisha kabisa error ya "Route [login] not defined" wakati wa redirect au logout
+Route::get('/login', function () {
+    return redirect('/admin/login');
+})->name('login');

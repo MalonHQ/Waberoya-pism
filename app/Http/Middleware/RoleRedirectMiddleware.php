@@ -9,28 +9,39 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleRedirectMiddleware
 {
-    /**
-     * Handle an incoming request.
-     */
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
 
-        if ($user) {
-            // Kama ni Student lakini yupo nje ya panel ya /student
-            if ($user->hasRole('student') && ! $request->is('student*')) {
-                return redirect('/student');
+        // Kama mtumiaji hajalogin kabisa
+        if (! $user) {
+            if ($request->is('logout') || $request->is('login') || $request->is('*/login') || $request->is('*login*')) {
+                return $next($request);
             }
 
-            // Kama ni Lecturer lakini yupo nje ya panel ya /lecturer
-            if ($user->hasRole('lecturer') && ! $request->is('lecturer*')) {
-                return redirect('/lecturer');
+            if ($request->is('student*') || $request->is('lecturer*') || $request->is('admin*')) {
+                return redirect('/admin/login');
             }
 
-            // Kama ni Admin lakini yupo kwenye panel za mwanafunzi au mwalimu
-            if ($user->hasRole('admin') && ! $request->is('admin*')) {
-                return redirect('/admin');
-            }
+            return $next($request);
+        }
+
+        // Ruhusu kurasa za logout zipite bila bug yoyote
+        if ($request->is('*/logout') || $request->is('logout')) {
+            return $next($request);
+        }
+
+        // Uelekezo kulingana na Role (Hakikisha hauingii kwenye loop)
+        if ($user->hasRole('student') && ! $request->is('student*')) {
+            return redirect()->to('/student');
+        }
+
+        if ($user->hasRole('lecturer') && ! $request->is('lecturer*')) {
+            return redirect()->to('/lecturer');
+        }
+
+        if (($user->hasRole('admin') || $user->email === 'admin@waberoya.co.tz') && ! $request->is('admin*')) {
+            return redirect()->to('/admin');
         }
 
         return $next($request);

@@ -62,17 +62,22 @@ class User extends Authenticatable implements FilamentUser
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        // 1. Ruhusu moja kwa moja kwa master admin wako au kama ana role ya admin
+        // 1. Master admin au mwenye role ya admin anapita popote moja kwa moja
         if ($this->email === 'admin@waberoya.co.tz' || $this->hasRole('admin')) {
             return true;
         }
 
-        // 2. Ruhusu lecturer kwenye panel yake
+        // 2. Kwenye mlango mkuu wa Admin (fomu yetu ya pamoja ya login)
+        if ($panel->getId() === 'admin') {
+            return $this->hasRole('admin') || $this->hasRole('lecturer') || $this->hasRole('student');
+        }
+
+        // 3. Ruhusu lecturer kwenye panel yake
         if ($panel->getId() === 'lecturer') {
             return $this->hasRole('lecturer');
         }
 
-        // 3. Ruhusu student kwenye panel yake
+        // 4. Ruhusu student kwenye panel yake
         if ($panel->getId() === 'student') {
             return $this->hasRole('student');
         }

@@ -27,8 +27,22 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->colors([
-                'primary' => Color::Amber,
+            ->brandName('WELCOME TO WABEROYA PIMS')
+            ->spa(false) // testing
+           ->colors([
+                'primary' => [
+                    50 => '#e0fbfc',
+                    100 => '#c4f7f8',
+                    200 => '#8febef',
+                    300 => '#59dcdc',
+                    400 => '#26c5c5',
+                    500 => '#00ced1', // Hii ndio Aqua halisi (Dark Turquoise/Aqua)
+                    600 => '#00a8aa',
+                    700 => '#008385',
+                    800 => '#005f60',
+                    900 => '#003a3b',
+                    950 => '#002223',
+                ],
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
