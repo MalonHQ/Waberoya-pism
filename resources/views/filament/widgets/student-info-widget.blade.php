@@ -9,23 +9,22 @@ use App\Models\Semester;
 
 class StudentInfoWidget extends Widget
 {
-    // Tumebadilisha hapa kutoka 'filament.student.widgets...' kwenda 'filament.widgets...'
-    protected static string $view = 'filament.widgets.student-info-widget';
+    protected static string $view = 'filament.student.widgets.student-info-widget';
     
     protected static ?int $sort = 2; 
 
-    // Hii inafanya widget icheze kwenye safu nzima (full width) chini ya Welcome
     protected int | string | array $columnSpan = 'full';
 
     public function getViewData(): array
     {
         $user = auth()->user();
-        
         $studentProfile = null;
+        
         if ($user) {
             $studentProfile = StudentProfile::where('user_id', $user->id)->with('department')->first();
         }
 
+        // Hapa tunachota mwaka wa masomo na semester iliyo active
         $activeAcademicYear = AcademicYear::where('is_active', true)->first();
         $activeSemester = Semester::where('is_active', true)->first();
 
