@@ -13,9 +13,19 @@ class RoleRedirectMiddleware
     {
         $user = Auth::user();
 
+        // Ruhusu Livewire, AJAX, na Logout zipite bila bug yoyote
+        if (
+            $request->is('livewire/*') || 
+            $request->ajax() || 
+            $request->is('*/logout') || 
+            $request->is('logout')
+        ) {
+            return $next($request);
+        }
+
         // Kama mtumiaji hajalogin kabisa
         if (! $user) {
-            if ($request->is('logout') || $request->is('login') || $request->is('*/login') || $request->is('*login*')) {
+            if ($request->is('login') || $request->is('*/login') || $request->is('*login*')) {
                 return $next($request);
             }
 
@@ -23,11 +33,6 @@ class RoleRedirectMiddleware
                 return redirect('/admin/login');
             }
 
-            return $next($request);
-        }
-
-        // Ruhusu kurasa za logout zipite bila bug yoyote
-        if ($request->is('*/logout') || $request->is('logout')) {
             return $next($request);
         }
 
