@@ -2,7 +2,12 @@
     <div class="p-6 bg-white rounded-lg shadow-sm print:shadow-none" id="student-report-print-area">
         <div class="text-center mb-6 border-b pb-4">
             <h2 class="text-xl font-bold text-gray-800">TAARIFA NA MATOKEO YAKO</h2>
-            <p class="text-sm text-gray-600">Tarehe ya Ripoti: {{ now()->format('d/m/Y H:i') }}</p>
+            <div class="flex justify-center items-center gap-3 mt-2 text-sm text-gray-600 font-medium">
+                <span>Mwaka wa Masomo: <strong class="text-emerald-700">{{ optional($activeAcademicYear)->name ?? \App\Models\AcademicYear::where('is_active', true)->first()->name ?? '2025/2026' }}</strong></span>
+                <span>•</span>
+                <span>Semester: <strong class="text-blue-700">{{ optional($activeSemester)->name ?? \App\Models\Semester::where('is_active', true)->first()->name ?? 'Semester I' }}</strong></span>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">Tarehe ya Ripoti: {{ now()->format('d/m/Y H:i') }}</p>
         </div>
 
         @if($record)
@@ -14,7 +19,7 @@
                 </div>
                 <div>
                     <p class="mb-2"><strong>Kozi / Idara:</strong> <span class="font-semibold text-emerald-800">{{ optional($record->department)->name ?? 'N/A' }}</span></p>
-                    <p class="mb-2"><strong>Mwaka wa Masomo:</strong> <span class="font-semibold text-blue-700">{{ $record->year_of_study ?? 'N/A' }}</span></p>
+                    <p class="mb-2"><strong>Mwaka wa Masomo (Year of Study):</strong> <span class="font-semibold text-blue-700">{{ $record->year_of_study ?? 'N/A' }}</span></p>
                     <p><strong>Tarehe ya Kujiandikisha:</strong> {{ $record->created_at?->format('d M Y H:i') }}</p>
                 </div>
             </div>
@@ -60,8 +65,8 @@
             </table>
 
             <div class="mt-6 flex justify-end gap-3 print:hidden">
-                <a href="{{ route('filament.student.pages.dashboard') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium text-sm flex items-center gap-2">
-                    <span>Cancel</span>
+                <a href="{{ url('/student') }}" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium text-sm flex items-center gap-2">
+                    <span>Rudi Nyumbani / Dashboard</span>
                 </a>
                 <button onclick="window.print()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 font-medium text-sm flex items-center gap-2">
                     <span>📥 Download / Chapisha</span>
